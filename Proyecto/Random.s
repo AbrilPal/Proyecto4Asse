@@ -71,3 +71,37 @@ RANDOM:
 
 
 	POP   {FP, PC}
+
+/************************************************************************************/
+
+/*         Autor: Pablo Sao                                                         */
+
+/*         Fecha: 11 de mayo de 2019                                                */
+
+/*   Descripcion: Variables y Rutinas globales para el programa.                    */
+
+/************************************************************************************/
+
+
+
+
+
+@****    Recibe en R0 los segundos a esperar
+
+.align 2
+
+.global ESPERASEG
+
+ESPERASEG:
+
+	PUSH  {LR}
+
+
+
+	BL    sleep		@ Espera tiempo pasado en R0
+
+	NOP
+
+
+
+	POP   {PC}

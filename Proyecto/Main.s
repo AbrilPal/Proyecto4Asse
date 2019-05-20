@@ -101,6 +101,7 @@ ciclo:
 	push {lr}
 	/* generar numero random */
 	mov r12, #4
+	
 	/* se guarda el numero random en r12 */
 	bl RANDOM 
 
@@ -114,6 +115,11 @@ ciclo:
 		moveq r0, #17
 		moveq r1, #1
 		bleq SetGpio
+		/* espera dos segundos */
+		moveq r0, #2
+		bleq ESPERASEG
+		/* apagar GPIO */
+
 	cmpne r12, #2
 		/* encender GPIO 18 */
 		moveq r0, #18
