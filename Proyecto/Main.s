@@ -30,6 +30,12 @@
 		.asciz "%s"
 	memoria:
 		.word 0
+	memoria1:
+		.word 0
+	texto:
+		.asciz "Ingrese el led: (1, 2, 3 o 4)\n"
+	perdio:
+		.asciz "INCORRECTO!"
 /*#################################  Main  #############################################*/
 .text
 .align 2
@@ -55,7 +61,6 @@ main:
 
         @@ grabar registro de enlace en la pila
         stmfd   sp!, {lr}
-
 menu:
 	/* muestra menu */
        ldr r0, =menu
@@ -80,9 +85,7 @@ menu:
        bne error
 juegoConsola:
 /* SECUENCIA RANDOM */
-	bl secuenciaRan
-
-	
+	bl secuenciaRan	
 reglas:
         @@muestra las reglas con puts
         ldr r0,=reglas
@@ -200,3 +203,193 @@ secuenciaRan:
 		bne ciclo
 	fin:
 		pop {pc}
+secuenciaIng:
+	ciclo_jugador:
+		ldr r0, =texto
+		bl puts
+
+		ldr r0,= opFormato
+		ldr r1,= op
+		bl scanf
+		/* guarda en registro lo que ingreso */
+		ldr r1, =op
+		ldr r0, [r1]
+
+		/* guardar numero ingresado en vector */
+		ldr r5, =memoria1
+		ldr r5, [r5]
+		ldr r1, =secuenciaFinal
+		add r6 r1, r5
+		str r0, [r6]
+
+		/* jalar la misma direccion del vector random */
+		ldr r5, =memoria1
+		ldr r5, [r5]
+		ldr r1, =secuenciaRandom
+		add r6 r1, r5
+		ldr r8, [r6]
+
+		/* comparar lo ingresado con la seciencia random */
+		cmp r8, r0
+			beq igual
+		bne perder
+	toto:
+		/* contador */
+		ldr r1, =contador1
+        ldr r8, [r1]
+        add r6, r8, #1
+        str r6, [r1]
+        ldr r1,=contador1
+        ldr r10, [r1]
+
+		/* sumar cuatro en memoria */
+		ldr r1, =memoria1
+        ldr r8, [r1]
+        add r6, r8, #4
+        str r6, [r1]
+
+		/* condicion para salir del ciclo */
+		cmp r10, #4
+			beq fin
+		bne ciclo_jugador
+
+	fin:
+		pop {pc}
+
+		igual:
+			/* jalar el valor ingresado */
+			ldr r5, =memoria1
+			ldr r5, [r5]
+			ldr r1, =secuenciaFinal
+			add r6 r1, r5
+			ldr r9, [r6]
+
+			cmp r9, #1
+				/* apagar GPIO */
+				moveq r0, #17
+				moveq r1, #0
+				bleq SetGpio
+				/* encender GPIO 17 */
+				moveq r0, #17
+				moveq r1, #1
+				bleq SetGpio
+				/* espera dos segundos */
+				moveq r0, #2
+				bleq ESPERASEG
+				/* apagar GPIO */
+				moveq r0, #17
+				moveq r1, #0
+				bleq SetGpio
+				beq toto
+			cmpne r9, #2
+				/* apagar GPIO */
+				moveq r0, #18
+				moveq r1, #0
+				bleq SetGpio
+				/* encender GPIO 18 */
+				moveq r0, #18
+				moveq r1, #1
+				bleq SetGpio
+				/* espera dos segundos */
+				moveq r0, #2
+				bleq ESPERASEG
+				/* apagar GPIO */
+				moveq r0, #18
+				moveq r1, #0
+				bleq SetGpio
+				beq toto
+			cmpne r9, #3
+				/* apagar GPIO */
+				moveq r0, #22
+				moveq r1, #0
+				bleq SetGpio
+				/* encender GPIO 22 */
+				moveq r0, #22
+				moveq r1, #1
+				bleq SetGpio
+				/* espera dos segundos */
+				moveq r0, #2
+				bleq ESPERASEG
+				/* apagar GPIO */
+				moveq r0, #22
+				moveq r1, #0
+				bleq SetGpio
+				beq toto
+			cmpne r9, #4
+				/* apagar GPIO */
+				moveq r0, #27
+				moveq r1, #0
+				bleq SetGpio
+				/* encender GPIO 27 */
+				moveq r0, #27
+				moveq r1, #1
+				bleq SetGpio
+				/* espera dos segundos */
+				moveq r0, #2
+				bleq ESPERASEG
+				/* apagar GPIO */
+				moveq r0, #27
+				moveq r1, #0
+				bleq SetGpio
+				beq toto
+
+		perder:
+			ldr r0, =perdio
+			bl puts
+			
+			/* apagar todos los GPIO */
+			mov r0, #17
+			mov r1, #0
+			bl SetGpio
+
+			mov r0, #18
+			mov r1, #0
+			bleq SetGpio
+
+			mov r0, #22
+			mov r1, #0
+			bl SetGpio
+
+			mov r0, #27
+			mov r1, #0
+			bl SetGpio
+
+			/* Encender todos los GPIO */
+			mov r0, #17
+			mov r1, #1
+			bl SetGpio
+
+			mov r0, #18
+			mov r1, #1
+			bl SetGpio
+
+			mov r0, #22
+			mov r1, #1
+			bl SetGpio
+
+			mov r0, #27
+			mov r1, #1
+			bl SetGpio
+
+			/* espera dos segundos */
+			mov r0, #2
+			bl ESPERASEG
+
+			/* apagar todos los GPIO */
+			mov r0, #17
+			mov r1, #0
+			bl SetGpio
+
+			mov r0, #18
+			mov r1, #0
+			bleq SetGpio
+
+			mov r0, #22
+			mov r1, #0
+			bl SetGpio
+
+			mov r0, #27
+			mov r1, #0
+			bl SetGpio
+
+			bl salir
