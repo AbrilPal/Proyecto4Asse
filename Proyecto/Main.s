@@ -21,7 +21,7 @@
 	op:
 		.word 0
 	Error_no_opcion:
-		.asciz "Error!!!! La opcion no es valida"
+		.asciz "Error!!!! La opcion no es correcta"
 	opFormato:
 		.asciz "%d"
 	contador:
@@ -37,20 +37,20 @@
 .type main, %function
 main:
 		/* configuracion de los puertos */
-		mov r0, #17				@ Seteamos pin 17
-		mov  r1, #1				@ Configuramos salida
+		mov r0, #17				@@ Seteamos pin 17
+		mov  r1, #1				@@ Configuramos salida
 		bl   SetGpioFunction	
 
-		mov r0, #22			@ Seteamos pin 22
-		mov  r1, #1				@ Configuramos salida
+		mov r0, #22			@@ Seteamos pin 22
+		mov  r1, #1				@@ Configuramos salida
 		bl   SetGpioFunction	
 
-		mov r0, #18			@ Seteamos pin 18
-		mov  r1, #1				@ Configuramos salida
+		mov r0, #18			@@ Seteamos pin 18
+		mov  r1, #1				@@ Configuramos salida
 		bl   SetGpioFunction
 		
-		mov r0, #27			@ Seteamos pin 27
-		mov  r1, #1				@ Configuramos salida
+		mov r0, #27			@@ Seteamos pin 27
+		mov  r1, #1				@@ Configuramos salida
 		bl   SetGpioFunction	
 
         @@ grabar registro de enlace en la pila
@@ -79,7 +79,9 @@ menu:
 			beq salir
        bne error
 juegoConsola:
-/* PRIMER NUMERO RANDOM */
+/* SECUENCIA RANDOM */
+	bl secuenciaRan
+
 	
 reglas:
         @@muestra las reglas con puts
@@ -96,43 +98,105 @@ salir:
         /* colocar registro de enlace para desactivar la pila y retorna al SO*/
         ldmfd   sp!, {lr}
         bx      lr
-encendido:
-ciclo:
-	push {lr}
-	/* generar numero random */
-	mov r12, #4
+secuenciaRan:
+	ciclo:
+		push {lr}
+		/* generar numero random */
+		mov r12, #4
 	
-	/* se guarda el numero random en r12 */
-	bl RANDOM 
+		/* se guarda el numero random en r12 */
+		bl RANDOM 
 
-	/* guardar primer numero random en vector */
-	ldr r1, =secuenciaRandom
-	str r12, [r1]
+		/* se prende la led correspondiente */
+		cmp r12, #1
+			/* apagar GPIO */
+			moveq r0, #17
+			moveq r1, #0
+			bleq SetGpio
+			/* encender GPIO 17 */
+			moveq r0, #17
+			moveq r1, #1
+			bleq SetGpio
+			/* espera dos segundos */
+			moveq r0, #2
+			bleq ESPERASEG
+			/* apagar GPIO */
+			moveq r0, #17
+			moveq r1, #0
+			bleq SetGpio
+		cmpne r12, #2
+			/* apagar GPIO */
+			moveq r0, #18
+			moveq r1, #0
+			bleq SetGpio
+			/* encender GPIO 18 */
+			moveq r0, #18
+			moveq r1, #1
+			bleq SetGpio
+			/* espera dos segundos */
+			moveq r0, #2
+			bleq ESPERASEG
+			/* apagar GPIO */
+			moveq r0, #18
+			moveq r1, #0
+			bleq SetGpio
+		cmpne r12, #3
+			/* apagar GPIO */
+			moveq r0, #22
+			moveq r1, #0
+			bleq SetGpio
+			/* encender GPIO 22 */
+			moveq r0, #22
+			moveq r1, #1
+			bleq SetGpio
+			/* espera dos segundos */
+			moveq r0, #2
+			bleq ESPERASEG
+			/* apagar GPIO */
+			moveq r0, #22
+			moveq r1, #0
+			bleq SetGpio
+		cmpne r12, #4
+			/* apagar GPIO */cgfvhgbjn
+			moveq r0, #27
+			moveq r1, #0
+			bleq SetGpio
+			/* encender GPIO 27 */
+			moveq r0, #27
+			moveq r1, #1
+			bleq SetGpio
+			/* espera dos segundos */
+			moveq r0, #2
+			bleq ESPERASEG
+			/* apagar GPIO */
+			moveq r0, #27
+			moveq r1, #0
+			bleq SetGpio
 
-	/* se prende la led correspondiente */
-	cmp r12, #1
-		/* encender GPIO 17 */
-		moveq r0, #17
-		moveq r1, #1
-		bleq SetGpio
-		/* espera dos segundos */
-		moveq r0, #2
-		bleq ESPERASEG
-		/* apagar GPIO */
+		/* guardar numero random en vector */
+		ldr r5, =memoria
+		ldr r5, [r5]
+		ldr r1, =secuenciaRandom
+		add r6 r1, r5
+		str r12, [r6]
 
-	cmpne r12, #2
-		/* encender GPIO 18 */
-		moveq r0, #18
-		moveq r1, #1
-		bleq SetGpio
-	cmpne r12, #3
-		/* encender GPIO 22 */
-		moveq r0, #22
-		moveq r1, #1
-		bleq SetGpio
-	cmpne r12, #4
-		/* encender GPIO 27 */
-		moveq r0, #27
-		moveq r1, #1
-		bleq SetGpio
-	pop {pc}
+		/* contador */
+		ldr r1, =contador
+        ldr r8, [r1]
+        add r6, r8, #1
+        str r6, [r1]
+        ldr r1,=contador
+        ldr r10, [r1]
+
+		/* sumar cuatro en memoria */
+		ldr r1, =memoria
+        ldr r8, [r1]
+        add r6, r8, #4
+        str r6, [r1]
+
+		/* condicion para salir del ciclo */
+		cmp r10, #4
+			beq fin
+		bne ciclo
+	fin:
+		pop {pc}
