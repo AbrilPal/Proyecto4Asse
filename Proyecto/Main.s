@@ -63,7 +63,7 @@ main:
 
         @@ grabar registro de enlace en la pila
         stmfd   sp!, {lr}
-menu:
+menu1:
 	/* muestra menu */
        ldr r0, =menu
        bl puts
@@ -77,11 +77,11 @@ menu:
 
        /* condicionales del menu */
        cmp r0,#1
-			beq reglas
+			beq reglas1
        cmpne r0,#2
 			beq juegoConsola
-       cmpne r0,#3
-			beq juegoSistema
+      /* cmpne r0,#3
+			beq juegoSistema*/
 	   cmpne r0, #4
 			beq salir
        bne error
@@ -90,15 +90,16 @@ juegoConsola:
 	bl secuenciaRan	
 /* TURNO DEL JUGADOR */
 	bl secuenciaIng
-reglas:
+	b salir
+reglas1:
         @@muestra las reglas con puts
         ldr r0,=reglas
         bl puts
-        b main
+        b menu1
 error:
         ldr r0,=Error_no_opcion
         bl puts
-        b main
+        b menu1
 salir:
         mov     r3, #0
         mov     r0, r3
@@ -106,8 +107,8 @@ salir:
         ldmfd   sp!, {lr}
         bx      lr
 secuenciaRan:
+	push {lr}
 	ciclo:
-		push {lr}
 		/* generar numero random */
 		mov r12, #4
 	
@@ -164,7 +165,7 @@ secuenciaRan:
 			moveq r1, #0
 			bleq SetGpio
 		cmpne r12, #4
-			/* apagar GPIO */cgfvhgbjn
+			/* apagar GPIO */
 			moveq r0, #27
 			moveq r1, #0
 			bleq SetGpio
@@ -184,7 +185,7 @@ secuenciaRan:
 		ldr r5, =memoria
 		ldr r5, [r5]
 		ldr r1, =secuenciaRandom
-		add r6 r1, r5
+		add r6, r1, r5
 		str r12, [r6]
 
 		/* contador */
@@ -223,14 +224,14 @@ secuenciaIng:
 		ldr r5, =memoria1
 		ldr r5, [r5]
 		ldr r1, =secuenciaFinal
-		add r6 r1, r5
+		add r6, r1, r5
 		str r0, [r6]
 
 		/* jalar la misma direccion del vector random */
 		ldr r5, =memoria1
 		ldr r5, [r5]
 		ldr r1, =secuenciaRandom
-		add r6 r1, r5
+		add r6, r1, r5
 		ldr r8, [r6]
 
 		/* comparar lo ingresado con la seciencia random */
@@ -254,10 +255,10 @@ secuenciaIng:
 
 		/* condicion para salir del ciclo */
 		cmp r10, #4
-			beq fin
+			beq fin1
 		bne ciclo_jugador
 
-	fin:
+	fin1:
 		pop {pc}
 
 		igual:
@@ -265,7 +266,7 @@ secuenciaIng:
 			ldr r5, =memoria1
 			ldr r5, [r5]
 			ldr r1, =secuenciaFinal
-			add r6 r1, r5
+			add r6, r1, r5
 			ldr r9, [r6]
 
 			cmp r9, #1
