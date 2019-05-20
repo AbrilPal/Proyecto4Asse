@@ -86,6 +86,8 @@ menu:
 juegoConsola:
 /* SECUENCIA RANDOM */
 	bl secuenciaRan	
+/* TURNO DEL JUGADOR */
+	bl secuenciaIng
 reglas:
         @@muestra las reglas con puts
         ldr r0,=reglas
