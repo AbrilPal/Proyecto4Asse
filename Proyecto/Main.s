@@ -36,6 +36,8 @@
 		.asciz "Ingrese el led: (1, 2, 3 o 4)\n"
 	perdio:
 		.asciz "INCORRECTO!"
+	contador1:
+		.word 0
 /*#################################  Main  #############################################*/
 .text
 .align 2
