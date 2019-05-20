@@ -26,9 +26,9 @@
 
 RANDOM:
 
-	@ args = 0, pretend = 0, frame = 8
+	@@ args = 0, pretend = 0, frame = 8
 
-	@ frame_needed = 1, uses_anonymous_args = 0
+	@@ frame_needed = 1, uses_anonymous_args = 0
 
 
 
@@ -86,7 +86,7 @@ RANDOM:
 
 
 
-@****    Recibe en R0 los segundos a esperar
+@@****    Recibe en R0 los segundos a esperar
 
 .align 2
 
@@ -98,7 +98,7 @@ ESPERASEG:
 
 
 
-	BL    sleep		@ Espera tiempo pasado en R0
+	BL    sleep		@@ Espera tiempo pasado en R0
 
 	NOP
 
