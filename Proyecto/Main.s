@@ -6,12 +6,16 @@
 */
 .data
 .align 2
-	menu:
+.global myloc
+myloc:
+	.word 0
+	
+menu:
 		.asciz "1.Reglas. \n 2. Por consola. \n 3. Por sistema. \n 4. Salir "
 	reglas:
-		.asciz "Se le dara una secuencia de 4 colores (luces led y usted tendrea que ingresar correctamente la secuencia dada. Si usted\n 
-		ingresa una posicion incorrecta se prenderan las 4 luces led para indicar que se confundio. El juego no tiene puntaje y finaliza\n 
-		cuando el jugador ingresa una posicion incorrecta. Habra un boton de reinicio, que se podra utilizar en cualquier momento para comenzar de nuevo.\n"
+		.asciz "Se le dara una secuencia de 4 colores (luces led y usted tendrea que ingresar correctamente la secuencia dada. Si usted\n" 
+		.asciz "ingresa una posicion incorrecta se prenderan las 4 luces led para indicar que se confundio. El juego no tiene puntaje y finaliza\n" 
+		.asciz "cuando el jugador ingresa una posicion incorrecta. Habra un boton de reinicio, que se podra utilizar en cualquier momento para comenzar de nuevo.\n"
 	led:
 		.asciz "Ingrese la led que desea:\n"
 	secuenciaRandom:
@@ -44,6 +48,7 @@
 .global main
 .type main, %function
 main:
+		bl GetGpioAddress
 		/* configuracion de los puertos */
 		mov r0, #17				@@ Seteamos pin 17
 		mov  r1, #1				@@ Configuramos salida
@@ -209,6 +214,7 @@ secuenciaRan:
 	fin:
 		pop {pc}
 secuenciaIng:
+	push {lr}
 	ciclo_jugador:
 		ldr r0, =texto
 		bl puts
