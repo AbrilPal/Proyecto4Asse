@@ -48,6 +48,9 @@ menu:
 .global main
 .type main, %function
 main:
+		 @@ grabar registro de enlace en la pila
+        stmfd   sp!, {lr}
+
 		bl GetGpioAddress
 		/* configuracion de los puertos */
 		mov r0, #17				@@ Seteamos pin 17
@@ -66,8 +69,7 @@ main:
 		mov  r1, #1				@@ Configuramos salida
 		bl   SetGpioFunction	
 
-        @@ grabar registro de enlace en la pila
-        stmfd   sp!, {lr}
+       
 menu1:
 	/* muestra menu */
        ldr r0, =menu
@@ -122,10 +124,6 @@ secuenciaRan:
 
 		/* se prende la led correspondiente */
 		cmp r12, #1
-			/* apagar GPIO */
-			moveq r0, #17
-			moveq r1, #0
-			bleq SetGpio
 			/* encender GPIO 17 */
 			moveq r0, #17
 			moveq r1, #1
@@ -137,10 +135,8 @@ secuenciaRan:
 			moveq r0, #17
 			moveq r1, #0
 			bleq SetGpio
+			beq lo
 		cmpne r12, #2
-			/* apagar GPIO */
-			moveq r0, #18
-			moveq r1, #0
 			bleq SetGpio
 			/* encender GPIO 18 */
 			moveq r0, #18
@@ -153,11 +149,8 @@ secuenciaRan:
 			moveq r0, #18
 			moveq r1, #0
 			bleq SetGpio
+			beq lo
 		cmpne r12, #3
-			/* apagar GPIO */
-			moveq r0, #22
-			moveq r1, #0
-			bleq SetGpio
 			/* encender GPIO 22 */
 			moveq r0, #22
 			moveq r1, #1
@@ -169,11 +162,8 @@ secuenciaRan:
 			moveq r0, #22
 			moveq r1, #0
 			bleq SetGpio
+			beq lo
 		cmpne r12, #4
-			/* apagar GPIO */
-			moveq r0, #27
-			moveq r1, #0
-			bleq SetGpio
 			/* encender GPIO 27 */
 			moveq r0, #27
 			moveq r1, #1
@@ -185,7 +175,8 @@ secuenciaRan:
 			moveq r0, #27
 			moveq r1, #0
 			bleq SetGpio
-
+			beq lo
+	lo:
 		/* guardar numero random en vector */
 		ldr r5, =memoria
 		ldr r5, [r5]
@@ -267,82 +258,66 @@ secuenciaIng:
 	fin1:
 		pop {pc}
 
-		igual:
-			/* jalar el valor ingresado */
-			ldr r5, =memoria1
-			ldr r5, [r5]
-			ldr r1, =secuenciaFinal
-			add r6, r1, r5
-			ldr r9, [r6]
+	igual:
+		/* jalar el valor ingresado */
+		ldr r5, =memoria1
+		ldr r5, [r5]
+		ldr r1, =secuenciaFinal
+		add r6, r1, r5
+		ldr r9, [r6]
 
-			cmp r9, #1
-				/* apagar GPIO */
-				moveq r0, #17
-				moveq r1, #0
-				bleq SetGpio
-				/* encender GPIO 17 */
-				moveq r0, #17
-				moveq r1, #1
-				bleq SetGpio
-				/* espera dos segundos */
-				moveq r0, #2
-				bleq ESPERASEG
-				/* apagar GPIO */
-				moveq r0, #17
-				moveq r1, #0
-				bleq SetGpio
-				beq toto
-			cmpne r9, #2
-				/* apagar GPIO */
-				moveq r0, #18
-				moveq r1, #0
-				bleq SetGpio
-				/* encender GPIO 18 */
-				moveq r0, #18
-				moveq r1, #1
-				bleq SetGpio
-				/* espera dos segundos */
-				moveq r0, #2
-				bleq ESPERASEG
-				/* apagar GPIO */
-				moveq r0, #18
-				moveq r1, #0
-				bleq SetGpio
-				beq toto
-			cmpne r9, #3
-				/* apagar GPIO */
-				moveq r0, #22
-				moveq r1, #0
-				bleq SetGpio
-				/* encender GPIO 22 */
-				moveq r0, #22
-				moveq r1, #1
-				bleq SetGpio
-				/* espera dos segundos */
-				moveq r0, #2
-				bleq ESPERASEG
-				/* apagar GPIO */
-				moveq r0, #22
-				moveq r1, #0
-				bleq SetGpio
-				beq toto
-			cmpne r9, #4
-				/* apagar GPIO */
-				moveq r0, #27
-				moveq r1, #0
-				bleq SetGpio
-				/* encender GPIO 27 */
-				moveq r0, #27
-				moveq r1, #1
-				bleq SetGpio
-				/* espera dos segundos */
-				moveq r0, #2
-				bleq ESPERASEG
-				/* apagar GPIO */
-				moveq r0, #27
-				moveq r1, #0
-				bleq SetGpio
-				beq toto
+		cmp r9, #1
+			/* encender GPIO 17 */
+			moveq r0, #17
+			moveq r1, #1
+			bleq SetGpio
+			/* espera dos segundos */
+			moveq r0, #2
+			bleq ESPERASEG
+			/* apagar GPIO */
+			moveq r0, #17
+			moveq r1, #0
+			bleq SetGpio
+			beq toto
+		cmpne r9, #2
+			/* encender GPIO 18 */
+			moveq r0, #18
+			moveq r1, #1
+			bleq SetGpio
+			/* espera dos segundos */
+			moveq r0, #2
+			bleq ESPERASEG
+			/* apagar GPIO */
+			moveq r0, #18
+			moveq r1, #0
+			bleq SetGpio
+			beq toto
+		cmpne r9, #3
+			/* encender GPIO 22 */
+			moveq r0, #22
+			moveq r1, #1
+			bleq SetGpio
+			/* espera dos segundos */
+			moveq r0, #2
+			bleq ESPERASEG
+			/* apagar GPIO */
+			moveq r0, #22
+			moveq r1, #0
+			bleq SetGpio
+			beq toto
+		cmpne r9, #4
+			/* encender GPIO 27 */
+			moveq r0, #27
+			moveq r1, #1
+			bleq SetGpio
+			/* espera dos segundos */
+			moveq r0, #2
+			bleq ESPERASEG
+			/* apagar GPIO */
+			moveq r0, #27
+			moveq r1, #0
+			bleq SetGpio
+			beq toto
 
 		perder:
 			ldr r0, =perdio
