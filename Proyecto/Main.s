@@ -185,16 +185,16 @@ secuenciaRan:
 		/* contador */
 		ldr r1, =contador
         ldr r8, [r1]
-        add r13, r8, #1
-        str r13, [r1]
+        add r3, r8, #1
+        str r3, [r1]
         ldr r1,=contador
         ldr r10, [r1]
 
 		/* sumar cuatro en memoria */
 		ldr r1, =memoria
         ldr r8, [r1]
-        add r14, r8, #4
-        str r14, [r1]
+        add r4, r8, #4
+        str r4, [r1]
 
 		/* condicion para salir del ciclo */
 		cmp r10, #4
