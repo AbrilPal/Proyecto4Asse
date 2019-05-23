@@ -95,8 +95,8 @@ menu1:
 juegoConsola:
 /* SECUENCIA RANDOM */
 	bl secuenciaRan	
-/* TURNO DEL JUGADOR */
-	bl secuenciaIng
+/* TURNO DEL JUGADOR 
+	bl secuenciaIng*/
 	b salir
 reglas1:
         @@muestra las reglas con puts
@@ -187,16 +187,16 @@ secuenciaRan:
 		/* contador */
 		ldr r1, =contador
         ldr r8, [r1]
-        add r6, r8, #1
-        str r6, [r1]
+        add r13, r8, #1
+        str r13, [r1]
         ldr r1,=contador
         ldr r10, [r1]
 
 		/* sumar cuatro en memoria */
 		ldr r1, =memoria
         ldr r8, [r1]
-        add r6, r8, #4
-        str r6, [r1]
+        add r14, r8, #4
+        str r14, [r1]
 
 		/* condicion para salir del ciclo */
 		cmp r10, #4
