@@ -67,6 +67,26 @@ main:
 		mov  r1, #1				
 		bl   SetGpioFunction
 
+		/* apagar GPIO 17 */
+			mov r0, #17
+			mov r1, #0
+			bl SetGpio
+
+			/* apagar GPIO 17 */
+			mov r0, #18
+			mov r1, #0
+			bl SetGpio
+		/* apagar GPIO 17 */
+			mov r0, #22
+			mov r1, #0
+			bl SetGpio
+
+		/* apagar GPIO 17 */
+			mov r0, #27
+			mov r1, #0
+			bl SetGpio
+
+
        
 menu1:
 	/* muestra menu */
@@ -92,10 +112,15 @@ menu1:
        bne error
 juegoConsola:
 /* SECUENCIA RANDOM */
-	bl secuenciaRan	
+		bl secuenciaIng
+		
+		b salir
+	
+	
+
+
 /* TURNO DEL JUGADOR 
 	bl secuenciaIng*/
-	b salir
 reglas1:
         @@muestra las reglas con puts
         ldr r0,=reglas
@@ -119,6 +144,9 @@ secuenciaRan:
 	
 		/* se guarda el numero random en r12 */
 		bl RANDOM 
+		/*mov r1, r12
+		ldr r0, =cadena
+		bl printf*/
 
 		/* se prende la led correspondiente */
 		cmp r12, #1
@@ -182,6 +210,9 @@ secuenciaRan:
 		add r6, r1, r5
 		str r12, [r6]
 
+		/*ldr r1, [r12]
+		ldr r0, =cadena
+		bl printf*/
 		/* contador */
 		ldr r1, =contador
         ldr r8, [r1]
