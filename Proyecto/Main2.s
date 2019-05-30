@@ -117,18 +117,8 @@ menu1:
 juegoConsola:
 /* SECUENCIA RANDOM */
 	bl secuenciaRan	
-    ldr r1, =secuenciaRandom
-    ldr r1, [r1]
-    ldr r0, =cadena
-    bl printf
 /* TURNO DEL JUGADOR */
 	bl secuenciaIng
-        
-		ldr r1, =secuenciaFinal
-        ldr r1, [r1]
-        ldr r0, =cadena
-        bl printf
-		
 	b salir
 reglas1:
         @@muestra las reglas con puts
@@ -172,6 +162,7 @@ secuenciaRan:
 			/* apagar GPIO */
 			moveq r0, #17
 			moveq r1, #0
+			cmp r12, #1
 			bleq SetGpio
 			beq lo
 		cmpne r12, #2
@@ -188,6 +179,7 @@ secuenciaRan:
 			moveq r0, #18
 			moveq r1, #0
 			bleq SetGpio
+			cmpne r12, #2
 			beq lo
 		cmpne r12, #3
 			/* encender GPIO 22 */
@@ -203,6 +195,7 @@ secuenciaRan:
 			moveq r0, #22
 			moveq r1, #0
 			bleq SetGpio
+			cmpne r12, #3
 			beq lo
 		cmpne r12, #4
 			/* encender GPIO 27 */
@@ -217,6 +210,7 @@ secuenciaRan:
 			moveq r0, #27
 			moveq r1, #0
 			bleq SetGpio
+			cmpne r12, #4
 			beq lo
 	lo:
     
@@ -260,7 +254,7 @@ secuenciaIng:
 		bl scanf
 		/* guarda en registro lo que ingreso */
 		ldr r1, =op
-		ldr r0, [r1]
+		ldr r7, [r1]
 
 		/* guardar numero ingresado en vector */
 		ldr r5, =memoria1
@@ -268,10 +262,7 @@ secuenciaIng:
 		ldr r1, =secuenciaFinal
 		add r6, r1, r5
 		ldr r7, [r6]
-        /*mov r7, r0*/
-        mov r1, r7
-        ldr r0, =cadena
-        bl printf
+       
 
 		/* jalar la misma direccion del vector random */
 		ldr r5, =memoria1
@@ -279,9 +270,7 @@ secuenciaIng:
 		ldr r1, =secuenciaRandom
 		add r6, r1, r5
 		ldr r8, [r6]
-        mov r1, r8
-        ldr r0, =cadena
-        bl printf
+        
 
 		/* comparar lo ingresado con la secuencia random */
 		cmp r8, r7
