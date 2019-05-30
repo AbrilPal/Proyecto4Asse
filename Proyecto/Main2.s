@@ -247,6 +247,8 @@ secuenciaRan:
 		bne ciclo
 	fin:
 		pop {pc}
+
+
 secuenciaIng:
 	push {lr}
 	ciclo_jugador:
@@ -283,7 +285,7 @@ secuenciaIng:
 
 		/* comparar lo ingresado con la secuencia random */
 		cmp r8, r7
-			beq igual2
+			beq igual
 		bne perder
 	toto:
 		/* contador */
@@ -314,61 +316,70 @@ secuenciaIng:
 		ldr r5, [r5]
 		ldr r1, =secuenciaFinal
 		add r6, r1, r5
-		ldr r9, [r6]*/
-
-        
-
+		ldr r9, [r6]
 		cmp r9, #1
 			/*encender GPIO 17*/
 			moveq r0, #17
 			moveq r1, #1
 			bleq SetGpio
-			espera dos segundos 
+			cmp r9, #1
+			/*espera dos segundos */
 			moveq r0, #2
 			bleq ESPERASEG
-			apagar GPIO
+			/*apagar GPIO*/
+			cmp r9, #1
 			moveq r0, #17
 			moveq r1, #0
 			bleq SetGpio
+			cmp r9, #1
 			beq toto
 		cmpne r9, #2
 			/*encender GPIO 18*/
 			moveq r0, #18
 			moveq r1, #1
 			bleq SetGpio
-			espera dos segundos
+			cmpne r9, #2
+			/*espera dos segundos*/
 			moveq r0, #2
 			bleq ESPERASEG
-			apagar GPIO
+			cmpne r9, #2
+			/*apagar GPIO*/
 			moveq r0, #18
 			moveq r1, #0
 			bleq SetGpio
+			cmpne r9, #2
 			beq toto
 		cmpne r9, #3
 			/*encender GPIO 22*/
 			moveq r0, #22
 			moveq r1, #1
 			bleq SetGpio
-			espera dos segundos 
+			cmpne r9, #3
+			/*espera dos segundos */
 			moveq r0, #2
 			bleq ESPERASEG
-			apagar GPIO
+			cmpne r9, #3
+			/*apagar GPIO*/
 			moveq r0, #22
 			moveq r1, #0
 			bleq SetGpio
+			cmpne r9, #3
 			beq toto
 		cmpne r9, #4
 			/*encender GPIO 27*/
 			moveq r0, #27
 			moveq r1, #1
 			bleq SetGpio
-			espera dos segundos
+			cmpne r9, #4
+			/*espera dos segundos*/
 			moveq r0, #2
 			bleq ESPERASEG
-			apagar GPIO 
+			cmpne r9, #4
+			/*apagar GPIO */
 			moveq r0, #27
 			moveq r1, #0
 			bleq SetGpio
+			cmpne r9, #4
 			beq toto
 
 		perder:
