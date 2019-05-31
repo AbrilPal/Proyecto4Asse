@@ -9,12 +9,12 @@
 .global myloc
 myloc:
 	.word 0
-	
+
 menu:
 		.asciz "1.Reglas. \n 2. Por consola. \n 3. Por sistema. \n 4. Salir "
 	reglas:
-		.asciz "Se le dara una secuencia de 4 colores (luces led y usted tendrea que ingresar correctamente la secuencia dada. Si usted\n" 
-		.asciz "ingresa una posicion incorrecta se prenderan las 4 luces led para indicar que se confundio. El juego no tiene puntaje y finaliza\n" 
+		.asciz "Se le dara una secuencia de 4 colores (luces led y usted tendrea que ingresar correctamente la secuencia dada. Si usted\n"
+		.asciz "ingresa una posicion incorrecta se prenderan las 4 luces led para indicar que se confundio. El juego no tiene puntaje y finaliza\n"
 		.asciz "cuando el jugador ingresa una posicion incorrecta. Habra un boton de reinicio, que se podra utilizar en cualquier momento para comenzar de nuevo."
 	led:
 		.asciz "Ingrese la led que desea:"
@@ -59,19 +59,19 @@ main:
 		/* configuracion de los puertos */
 		mov r0, #17				@@ Seteamos pin 17
 		mov  r1, #1				@@ Configuramos salida
-		bl   SetGpioFunction	
+		bl   SetGpioFunction
 
 		mov r0, #22			@@ Seteamos pin 22
 		mov  r1, #1				@@ Configuramos salida
-		bl   SetGpioFunction	
+		bl   SetGpioFunction
 
 		mov r0, #18			@@ Seteamos pin 18
 		mov  r1, #1				@@ Configuramos salida
 		bl   SetGpioFunction
-		
+
 		mov r0, #27			@@ Seteamos pin 27
 		mov  r1, #1				@@ Configuramos salida
-		bl   SetGpioFunction	
+		bl   SetGpioFunction
 
         /* apagar GPIO 17 */
 			mov r0, #17
@@ -93,7 +93,7 @@ main:
 			bl SetGpio
 
 
-       
+
 menu1:
 	/* muestra menu */
        ldr r0, =menu
@@ -118,7 +118,7 @@ menu1:
        bne error
 juegoConsola:
 /* SECUENCIA RANDOM */
-	bl secuenciaRan	
+	bl secuenciaRan
 /* TURNO DEL JUGADOR */
 	bl secuenciaIng
 	b salir
@@ -142,9 +142,9 @@ secuenciaRan:
 	ciclo:
 		/* generar numero random */
 		mov r12, #4
-	
+
 		/* se guarda el numero random en r12 */
-		bl RANDOM 
+		bl RANDOM
 
 		/* se prende la led correspondiente */
 		cmp r12, #1
@@ -211,7 +211,7 @@ secuenciaRan:
 			cmpne r12, #4
 			beq lo
 	lo:
-    
+
 		/* guardar numero random en vector */
 		ldr r5, =memoria
 		ldr r5, [r5]
@@ -277,7 +277,7 @@ secuenciaIng:
         mov r1, r8
         ldr r0, =cadena
         bl printf
-        
+
 		/* comparar lo ingresado con la secuencia random */
 		cmp r8, r7
 			ldreq r0, =jeje
@@ -382,7 +382,7 @@ secuenciaIng:
 		perder:
 			ldr r0, =perdio
 			bl puts
-			
+
 			/* apagar todos los GPIO */
 			mov r0, #17
 			mov r1, #0
@@ -437,7 +437,5 @@ secuenciaIng:
 			mov r0, #27
 			mov r1, #0
 			bl SetGpio
-			
-			bl fin1
-	
 
+			bl fin1
