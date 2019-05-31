@@ -264,6 +264,7 @@ secuenciaIng:
 		ldr r1, =secuenciaFinal
 		add r6, r1, r5
 		str r7, [r6]
+
 		ldr r7, [r6]
        
 
@@ -274,13 +275,12 @@ secuenciaIng:
 		add r6, r1, r5
 		ldr r8, [r6]
         
-
 		/* comparar lo ingresado con la secuencia random */
 		cmp r8, r7
 			ldreq r0, =jeje
 			bleq puts
 			beq igual
-		bne igual
+		bne perder
 	toto:
 		/* contador */
 		ldr r1, =contador1
