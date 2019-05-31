@@ -265,15 +265,22 @@ secuenciaIng:
 		add r6, r1, r5
 		str r7, [r6]
 
-		ldr r7, [r6]
-       
-
 		/* jalar la misma direccion del vector random */
 		ldr r5, =memoria1
 		ldr r5, [r5]
 		ldr r1, =secuenciaRandom
 		add r6, r1, r5
 		ldr r8, [r6]
+
+		/*imprimir el nuevo valor de la posicion */
+        mov r1, r7
+        ldr r0, =cadena
+        bl printf
+
+		/*imprimir el nuevo valor de la posicion */
+        mov r1, r8
+        ldr r0, =cadena
+        bl printf
         
 		/* comparar lo ingresado con la secuencia random */
 		cmp r8, r7
