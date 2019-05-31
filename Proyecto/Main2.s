@@ -146,6 +146,7 @@ secuenciaRan:
 		/* se guarda el numero random en r12 */
 		bl RANDOM
 
+		push {r12}
 		/* se prende la led correspondiente */
 		cmp r12, #1
 			/* encender GPIO 17 */
@@ -213,6 +214,7 @@ secuenciaRan:
 	lo:
 
 		/* guardar numero random en vector */
+		pop {r12}
 		ldr r5, =memoria
 		ldr r5, [r5]
 		ldr r1, =secuenciaRandom
@@ -260,6 +262,7 @@ secuenciaIng:
 		ldr r1, =secuenciaFinal
 		add r6, r1, r5
 		str r7, [r6]
+		ldr r4, [r6]
 
 		/* jalar la misma direccion del vector random */
 		ldr r5, =memoria1
@@ -269,7 +272,7 @@ secuenciaIng:
 		ldr r8, [r6]
 
 		/*imprimir el nuevo valor de la posicion */
-        mov r1, r7
+        mov r1, r4
         ldr r0, =cadena
         bl printf
 
@@ -291,7 +294,7 @@ secuenciaIng:
         add r6, r8, #1
         str r6, [r1]
         ldr r1,=contador1
-        ldr r1, [r1]
+        ldr r7, [r1]
 
 		/* sumar cuatro en memoria */
 		ldr r1, =memoria1
@@ -300,7 +303,7 @@ secuenciaIng:
         str r6, [r1]
 
 		/* condicion para salir del ciclo */
-		cmp r1, #4
+		cmp r7, #4
 			beq fin1
 		bne ciclo_jugador
 
