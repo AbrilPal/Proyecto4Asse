@@ -280,7 +280,7 @@ secuenciaIng:
 			ldreq r0, =jeje
 			bleq puts
 			beq igual
-		bne perder
+		bne igual
 	toto:
 		/* contador */
 		ldr r1, =contador1
