@@ -26,6 +26,8 @@ menu:
 		.word 0
 	Error_no_opcion:
 		.asciz "Error!!!! La opcion no es correcta"
+	jeje:
+		.asciz "jejeje  "
 	opFormato:
 		.asciz "%d"
 	contador:
@@ -261,6 +263,7 @@ secuenciaIng:
 		ldr r5, [r5]
 		ldr r1, =secuenciaFinal
 		add r6, r1, r5
+		str r7, [r6]
 		ldr r7, [r6]
        
 
@@ -274,6 +277,8 @@ secuenciaIng:
 
 		/* comparar lo ingresado con la secuencia random */
 		cmp r8, r7
+			ldreq r0, =jeje
+			bleq puts
 			beq igual
 		bne perder
 	toto:
@@ -430,5 +435,6 @@ secuenciaIng:
 			mov r1, #0
 			bl SetGpio
 			
+			bl fin1
 	
 
