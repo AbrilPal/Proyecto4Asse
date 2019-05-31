@@ -271,8 +271,7 @@ secuenciaRan:
 			bleq SetGpio
 
 		ldr r1, =secuenciaRandom
-		add r6, r1, #4
-		str r12, [r6]
+		str r12, [r6], #4
 
 		/* generar numero random */
 		mov r12, #4
@@ -339,8 +338,7 @@ secuenciaRan:
 			bleq SetGpio
 
 		ldr r1, =secuenciaRandom
-		add r6, r1, #8
-		str r12, [r6]
+		str r12, [r6], #8
 
 		/* generar numero random */
 		mov r12, #4
@@ -407,8 +405,7 @@ secuenciaRan:
 			bleq SetGpio
 
 		ldr r1, =secuenciaRandom
-		add r6, r1, #12
-		str r12, [r6]
+		str r12, [r6], #12
 	
 		pop {pc}
 
