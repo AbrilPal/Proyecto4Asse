@@ -35,9 +35,9 @@ menu:
 	cadena:
 		.asciz "%d\n"
 	memoria:
-		.word 0
+		.word 4
 	memoria1:
-		.word 0
+		.word 4
 	texto:
 		.asciz "Ingrese el led: (1, 2, 3 o 4)"
 	perdio:
