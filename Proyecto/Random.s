@@ -40,31 +40,31 @@ RANDOM:
 
 	SUB   SP, #8
 
-	STR   R3, [FP, #-8]
+	STR   R12, [FP, #-8]
 
 	MOV   R0, #0
 
 	BL    time
 
-	MOV   R3, R0
+	MOV   R12, R0
 
-	MOV   R0, R3
+	MOV   R0, R12
 
 	BL    srand
 
 	BL    rand
 
-	MOV   R3, R0
+	MOV   R12, R0
 
 	LDR   R1, [FP, #-8]
 
-	MOV   R0, R3
+	MOV   R0, R12
 
 	BL    __aeabi_idivmod
 
-	MOV   R3, R1
+	MOV   R12, R1
 
-	ADD   R3, R3, #1
+	ADD   R12, R12, #1
 
 	SUB   SP, FP, #4
 
