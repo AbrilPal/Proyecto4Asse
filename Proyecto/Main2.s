@@ -35,9 +35,9 @@ menu:
 	cadena:
 		.asciz "%d\n"
 	memoria:
-		.word 4
+		.word 0
 	memoria1:
-		.word 4
+		.word 0
 	texto:
 		.asciz "Ingrese el led: (1, 2, 3 o 4)"
 	perdio:
@@ -141,78 +141,74 @@ secuenciaRan:
 	push {lr}
 	ciclo:
 		/* generar numero random */
-		mov r12, #4
+		mov r3, #4
 	
-		/* se guarda el numero random en r12 */
+		/* se guarda el numero random en r3 */
 		bl RANDOM 
 
-        /*mov r1, r12
-        ldr r0, =cadena
-        bl printf*/
-
 		/* se prende la led correspondiente */
-		cmp r12, #1
+		cmp r3, #1
 			/* encender GPIO 17 */
 			moveq r0, #17
 			moveq r1, #1
 			bleq SetGpio
-			cmp r12, #1
+			cmp r3, #1
 			/* espera dos segundos */
 			moveq r0, #2
 			bleq ESPERASEG
-			cmp r12, #1
+			cmp r3, #1
 			/* apagar GPIO */
 			moveq r0, #17
 			moveq r1, #0
-			cmp r12, #1
+			cmp r3, #1
 			bleq SetGpio
 			beq lo
-		cmpne r12, #2
+		cmpne r3, #2
 			/* encender GPIO 18 */
 			moveq r0, #18
 			moveq r1, #1
 			bleq SetGpio
-			cmpne r12, #2
+			cmpne r3, #2
 			/* espera dos segundos */
 			moveq r0, #2
 			bleq ESPERASEG
-			cmpne r12, #2
+			cmpne r3, #2
 			/* apagar GPIO */
 			moveq r0, #18
 			moveq r1, #0
 			bleq SetGpio
-			cmpne r12, #2
+			cmpne r3, #2
 			beq lo
-		cmpne r12, #3
+		cmpne r3, #3
 			/* encender GPIO 22 */
 			moveq r0, #22
 			moveq r1, #1
 			bleq SetGpio
-			cmpne r12, #3
+			cmpne r3, #3
 			/* espera dos segundos */
 			moveq r0, #2
 			bleq ESPERASEG
-			cmpne r12, #3
+			cmpne r3, #3
 			/* apagar GPIO */
 			moveq r0, #22
 			moveq r1, #0
 			bleq SetGpio
-			cmpne r12, #3
+			cmpne r3, #3
 			beq lo
-		cmpne r12, #4
+		cmpne r3, #4
 			/* encender GPIO 27 */
 			moveq r0, #27
 			moveq r1, #1
 			bleq SetGpio
-			cmpne r12, #4
+			cmpne r3, #4
 			/* espera dos segundos */
 			moveq r0, #2
 			bleq ESPERASEG
-			cmpne r12, #4
+			cmpne r3, #4
 			moveq r0, #27
 			moveq r1, #0
 			bleq SetGpio
-			cmpne r12, #4
+			cmpne r3, #4
 			beq lo
 	lo:
     
@@ -221,7 +217,7 @@ secuenciaRan:
 		ldr r5, [r5]
 		ldr r1, =secuenciaRandom
 		add r6, r1, r5
-		str r12, [r6]
+		str r3, [r6]
 
 		/* contador */
 		ldr r1, =contador
